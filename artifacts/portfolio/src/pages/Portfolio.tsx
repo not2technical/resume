@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import "../portfolio.css";
+import "../index.css";
 import HeroSection from "../components/HeroSection";
 import HowIThinkSection from "../components/HowIThinkSection";
 import OperatingPrinciplesSection from "../components/OperatingPrinciplesSection";
