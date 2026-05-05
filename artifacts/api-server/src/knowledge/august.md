@@ -28,7 +28,7 @@ For complex problems, I'll tear down the problem and build a scoring rubric to h
 ### Salesforce (2019–Present)
 Career progression: Lead Solution Engineer → Product Manager → Senior Product Manager → Director / GenAI / Industry Solutions Architect
 
-I've spent 6+ years at Salesforce, moving from the field (SE) into product and then into GenAI and industry solutions architecture. I lead product thinking for Salesforce Industries — vertical-specific clouds (manufacturing, automotive, financial services, etc.) — and now sit at the intersection of GenAI and industry go-to-market. I'm a Salesforce Certified Technical Architect (CTA).
+I've spent 6+ years at Salesforce, moving from the field (SE) into product and then into GenAI and industry solutions architecture. I lead product thinking for Salesforce Industries — vertical-specific clouds (manufacturing, automotive, financial services, etc.) — and now sit at the intersection of GenAI and industry go-to-market.
 
 Key areas of expertise:
 - Salesforce Industries (Vlocity) — Manufacturing, Automotive, Financial Services clouds
@@ -48,7 +48,7 @@ Software Solutions Senior Manager / Software Engineer. 13 years building softwar
 Privacy-focused voice dictation for terminal input with wake word activation and local speech-to-text. Say "computer", speak your command, watch it appear in your terminal — Star Trek style. All processing happens locally on your Mac. No cloud, no surveillance. Built for developers who live in the terminal. Features: always-listening wake word detection, terminal-native commands, Claude mode switching with voice, fully customizable (13+ wake word options).
 
 ### sf-skills (github.com/not2technical/sf-skills)
-Salesforce Skills for Agentic Coding Tools — AI-powered Apex, Flow, LWC, SOQL, Agentforce skills for Claude Code and other agentic tools. 14+ skills, 420+ validation points, LSP integration. Essentially portable knowledge packs that make AI coding agents instant Salesforce experts. Open-source, community-powered, built from my CTA-level knowledge.
+Salesforce Skills for Agentic Coding Tools — AI-powered Apex, Flow, LWC, SOQL, Agentforce skills for Claude Code and other agentic tools. 14+ skills, 420+ validation points, LSP integration. Essentially portable knowledge packs that make AI coding agents instant Salesforce experts. Open-source, community-powered. I'm the number one contributor to the repo.
 
 ### augustkrys.ai Portfolio (github.com/not2technical/resume)
 This portfolio site. Built as a React+Vite app, ported from a custom static HTML/CSS infographic design. Hosted on Replit, connected to augustkrys.ai.
@@ -77,7 +77,6 @@ A collection of Salesforce projects — deeper implementations, patterns, and pr
 - Whisper / local speech-to-text
 
 **Salesforce Ecosystem:**
-- Salesforce CTA certified
 - Apex, Flow, LWC, SOQL
 - Salesforce Industries (Vlocity)
 - Agentforce
