@@ -9,6 +9,7 @@ import DetailSection from "../components/DetailSection";
 import ExperienceModal from "../components/ExperienceModal";
 import FooterSection from "../components/FooterSection";
 import StatusBar from "../components/StatusBar";
+import ChatWidget from "../components/ChatWidget";
 
 export default function Portfolio() {
   useEffect(() => {
@@ -173,6 +174,7 @@ export default function Portfolio() {
       <ExperienceModal />
       <FooterSection />
       <StatusBar />
+      <ChatWidget />
     </>
   );
 }
