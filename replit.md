@@ -9,43 +9,43 @@ Personal portfolio website for August Krys at augustkrys.ai, with a planned AI a
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks from OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
 
-Required env vars: `DATABASE_URL` (auto-set when DB provisioned), `PORT`, `BASE_PATH`
+Required env vars: `PORT` (defaults to 3000), `BASE_PATH` (defaults to `/`)
 
 ## Stack
 
 - **Monorepo**: pnpm workspaces
-- **Frontend**: React 19, Vite 7, Tailwind CSS 4 (portfolio uses custom CSS, not Tailwind)
+- **Frontend**: React 19, Vite 7 (portfolio uses custom CSS, not Tailwind)
 - **Backend**: Express 5, Node 24
 - **Database**: PostgreSQL + Drizzle ORM (schema empty — not yet used)
-- **API codegen**: Orval (from OpenAPI spec in `lib/api-spec/openapi.yaml`)
 - **TypeScript**: 5.9
 
 ## Where things live
 
 - `artifacts/portfolio/` — the portfolio site (react-vite, serves at `/`)
-  - `src/portfolioContent.html` — full HTML body content (raw import)
-  - `src/portfolio.css` — all site styles (verbatim from GitHub source)
-  - `src/pages/Portfolio.tsx` — main React component with JS behaviors
-  - `public/resumeimage.png` — profile photo
+  - `src/index.css` — full site styles (verbatim from GitHub source styles.css + hero__photo rule)
+  - `src/pages/Portfolio.tsx` — root component; mounts section components + all JS behaviors via useEffect
+  - `src/components/` — one file per section: HeroSection, HowIThinkSection, OperatingPrinciplesSection, ProofIBuildSection, HarnessSection, DetailSection, ExperienceModal, FooterSection, StatusBar
+  - `public/resumeimage.png` — profile photo (rendered in HeroSection)
 - `artifacts/api-server/` — Express API backend (serves at `/api`)
 - `lib/api-spec/openapi.yaml` — API contract (source of truth)
 - `lib/db/src/schema/` — Drizzle schema (empty, ready for AI assistant tables)
 
 ## Architecture decisions
 
-- Portfolio uses `dangerouslySetInnerHTML` with a `?raw` HTML import to preserve 100% visual fidelity from the original static site without JSX conversion errors on complex inline SVGs.
-- All original JS behaviors (scroll reveal, scroll spy, vim nav, modals, clock) run as a single `useEffect` with cleanup.
-- No Tailwind used in the portfolio — custom CSS variables and class names from the original design are preserved as-is.
-- AI assistant backend will use the existing Express API server (new routes) and Replit AI Integrations for the LLM.
+- Portfolio is componentized JSX: each page section is its own file under `src/components/`, converted from the original static HTML with proper camelCase SVG attrs and style objects.
+- All original JS behaviors (scroll reveal, scroll-spy, vim j/k/g/G nav, live clock, modal open/close) run in a single `useEffect` in `Portfolio.tsx` with full cleanup.
+- No Tailwind used in the portfolio — custom CSS variables and class names from the original design preserved in `src/index.css`.
+- `vite.config.ts` uses sensible defaults for `PORT` and `BASE_PATH` so builds work without mandatory env vars.
+- AI assistant backend will use the existing Express API server (new routes) + Replit AI Integrations for the LLM.
 
 ## Product
 
-- Full personal portfolio for August Krys: Hero, How I Think, Operating Principles, Builder Projects, Experience (Salesforce, Krys IT), Skills, AI Harness
+- Full personal portfolio for August Krys: Hero, How I Think, Operating Principles, Builder Projects, Experience (Salesforce, Krys IT), AI Harness, Resume, Footer
 - Status bar with vim-style keyboard navigation (j/k scroll, g/G top/bottom)
 - Section scroll-spy that highlights the active tab
 - Live clock in the status bar
+- Experience modal (opens on detail section link click)
 
 ## User preferences
 
@@ -55,6 +55,6 @@ Required env vars: `DATABASE_URL` (auto-set when DB provisioned), `PORT`, `BASE_
 
 ## Gotchas
 
-- `portfolioContent.html` is imported as a raw string via Vite's `?raw` suffix — do not process it through React's JSX transform
-- Profile image served from `/resumeimage.png` (in `public/`) — the portfolio HTML references it at this root path
-- The portfolio uses its own `portfolio.css`, not the Tailwind `index.css` used by the scaffold
+- Profile image served from `/resumeimage.png` (in `public/`) — rendered as circular hero photo
+- Portfolio CSS lives in `src/index.css` — do not add Tailwind imports or scaffold boilerplate back
+- Modal open/close uses event delegation via `data-open-modal` / `data-close-modal` HTML attributes
