@@ -6,10 +6,10 @@ interface Message {
 }
 
 const SUGGESTED = [
-  "What have you built?",
-  "How do you make decisions?",
-  "Tell me about your background",
-  "What's your current stack?",
+  "What have I built?",
+  "How do I approach decisions?",
+  "Curious about my background?",
+  "What's my current harness?",
 ];
 
 const API_BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
