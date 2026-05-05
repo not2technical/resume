@@ -57,7 +57,8 @@ export default function ChatWidget() {
       const decoder = new TextDecoder();
       let buffer = "";
 
-      while (true) {
+      let terminated = false;
+      while (!terminated) {
         const { done, value } = await reader.read();
         if (done) break;
         buffer += decoder.decode(value, { stream: true });
@@ -67,22 +68,38 @@ export default function ChatWidget() {
         for (const line of lines) {
           if (!line.startsWith("data: ")) continue;
           const data = line.slice(6).trim();
-          if (data === "[DONE]") break;
+          if (data === "[DONE]") { terminated = true; break; }
+
+          let parsed: { text?: string; error?: string } | null = null;
           try {
-            const parsed = JSON.parse(data);
-            if (parsed.error) throw new Error(parsed.error);
-            if (parsed.text) {
-              setMessages((prev) => {
-                const updated = [...prev];
-                updated[updated.length - 1] = {
-                  role: "assistant",
-                  content: updated[updated.length - 1].content + parsed.text,
-                };
-                return updated;
-              });
-            }
+            parsed = JSON.parse(data);
           } catch {
-            // ignore parse errors for partial chunks
+            // incomplete chunk — skip
+            continue;
+          }
+
+          if (parsed?.error) {
+            setMessages((prev) => {
+              const updated = [...prev];
+              updated[updated.length - 1] = {
+                role: "assistant",
+                content: "Something went wrong on my end. Try again.",
+              };
+              return updated;
+            });
+            terminated = true;
+            break;
+          }
+
+          if (parsed?.text) {
+            setMessages((prev) => {
+              const updated = [...prev];
+              updated[updated.length - 1] = {
+                role: "assistant",
+                content: updated[updated.length - 1].content + parsed!.text,
+              };
+              return updated;
+            });
           }
         }
       }
@@ -91,7 +108,7 @@ export default function ChatWidget() {
         const updated = [...prev];
         updated[updated.length - 1] = {
           role: "assistant",
-          content: "Something went wrong. Try again.",
+          content: "Network error — check your connection and try again.",
         };
         return updated;
       });

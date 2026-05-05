@@ -1,6 +1,6 @@
 import { Router, type IRouter, type Request, type Response } from "express";
 import Anthropic from "@anthropic-ai/sdk";
-import AUGUST_KNOWLEDGE from "../knowledge/august";
+import AUGUST_KNOWLEDGE from "../knowledge/august.md";
 
 const client = new Anthropic({ apiKey: process.env.CLAUDE_API_KEY });
 
