@@ -1,6 +1,6 @@
 # August Krys — Portfolio Site
 
-Personal portfolio website for August Krys at augustkrys.ai, with a planned AI assistant that answers questions about his resume and work.
+Personal portfolio website for August Krys at augustkrys.ai, with an AI assistant ("Ask August") that answers questions in his voice.
 
 ## Run & Operate
 
@@ -8,53 +8,53 @@ Personal portfolio website for August Krys at augustkrys.ai, with a planned AI a
 - `pnpm --filter @workspace/api-server run dev` — run API backend
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks from OpenAPI spec
 
-Required env vars: `PORT` (defaults to 3000), `BASE_PATH` (defaults to `/`)
+Required secrets: `CLAUDE_API_KEY` (Anthropic API key for the chat assistant)
 
 ## Stack
 
 - **Monorepo**: pnpm workspaces
-- **Frontend**: React 19, Vite 7 (portfolio uses custom CSS, not Tailwind)
-- **Backend**: Express 5, Node 24
+- **Frontend**: React 19, Vite 7 (portfolio uses custom CSS, no Tailwind)
+- **Backend**: Express 5, Node 24, Anthropic SDK (`@anthropic-ai/sdk`)
 - **Database**: PostgreSQL + Drizzle ORM (schema empty — not yet used)
 - **TypeScript**: 5.9
 
 ## Where things live
 
 - `artifacts/portfolio/` — the portfolio site (react-vite, serves at `/`)
-  - `src/index.css` — full site styles (verbatim from GitHub source styles.css + hero__photo rule)
-  - `src/pages/Portfolio.tsx` — root component; mounts section components + all JS behaviors via useEffect
-  - `src/components/` — one file per section: HeroSection, HowIThinkSection, OperatingPrinciplesSection, ProofIBuildSection, HarnessSection, DetailSection, ExperienceModal, FooterSection, StatusBar
-  - `public/resumeimage.png` — profile photo (rendered in HeroSection)
+  - `src/index.css` — full site styles + chat widget CSS at the bottom
+  - `src/pages/Portfolio.tsx` — root component; mounts all section components + ChatWidget
+  - `src/components/` — HeroSection, HowIThinkSection, OperatingPrinciplesSection, ProofIBuildSection, HarnessSection, DetailSection, ExperienceModal, FooterSection, StatusBar, **ChatWidget**
 - `artifacts/api-server/` — Express API backend (serves at `/api`)
+  - `src/routes/chat.ts` — `POST /api/chat` SSE streaming route (Claude)
+  - `src/knowledge/august.ts` — August's full knowledge base as a TS string constant (inlined by esbuild)
+  - `src/knowledge/august.md` — source markdown (edit this, then regenerate august.ts)
 - `lib/api-spec/openapi.yaml` — API contract (source of truth)
-- `lib/db/src/schema/` — Drizzle schema (empty, ready for AI assistant tables)
 
 ## Architecture decisions
 
-- Portfolio is componentized JSX: each page section is its own file under `src/components/`, converted from the original static HTML with proper camelCase SVG attrs and style objects.
-- All original JS behaviors (scroll reveal, scroll-spy, vim j/k/g/G nav, live clock, modal open/close) run in a single `useEffect` in `Portfolio.tsx` with full cleanup.
-- No Tailwind used in the portfolio — custom CSS variables and class names from the original design preserved in `src/index.css`.
-- `vite.config.ts` uses sensible defaults for `PORT` and `BASE_PATH` so builds work without mandatory env vars.
-- AI assistant backend will use the existing Express API server (new routes) + Replit AI Integrations for the LLM.
+- Portfolio is componentized JSX: each page section is its own file, converted from original static HTML.
+- All JS behaviors (scroll reveal, scroll-spy, vim nav, live clock, modal) run in a single `useEffect` in `Portfolio.tsx`.
+- No Tailwind — custom CSS variables and class names from original design preserved in `src/index.css`.
+- Knowledge base is a `.md` file compiled to a `.ts` string export so esbuild inlines it at build time (no file-system reads at runtime).
+- Chat uses SSE streaming: `POST /api/chat` → server-sent events → token-by-token render in the widget.
+- `ChatWidget` is self-contained; no external UI deps — navy/cyan palette matches the site CSS vars.
 
 ## Product
 
-- Full personal portfolio for August Krys: Hero, How I Think, Operating Principles, Builder Projects, Experience (Salesforce, Krys IT), AI Harness, Resume, Footer
-- Status bar with vim-style keyboard navigation (j/k scroll, g/G top/bottom)
-- Section scroll-spy that highlights the active tab
-- Live clock in the status bar
+- Full personal portfolio: Hero, How I Think, Operating Principles, Builder Projects, Experience, AI Harness, Resume, Footer
+- Status bar with vim-style keyboard navigation (j/k scroll, g/G top/bottom), scroll-spy, live clock
 - Experience modal (opens on detail section link click)
+- **"Ask August" AI chat widget** — floating button bottom-right, expands to panel, streams Claude responses in August's voice with starter prompt chips
 
 ## User preferences
 
 - Site should match the original GitHub repo (not2technical/resume) exactly
-- AI assistant to be added as a follow-up iteration
-- Will be hosted at augustkrys.ai
+- Hosted at augustkrys.ai
 
 ## Gotchas
 
-- Profile image served from `/resumeimage.png` (in `public/`) — rendered as circular hero photo
-- Portfolio CSS lives in `src/index.css` — do not add Tailwind imports or scaffold boilerplate back
-- Modal open/close uses event delegation via `data-open-modal` / `data-close-modal` HTML attributes
+- Knowledge base: edit `august.md`, then run the node script in `src/knowledge/` to regenerate `august.ts` before restarting the server
+- Portfolio CSS lives in `src/index.css` — do not add Tailwind or boilerplate back
+- Modal open/close uses event delegation via `data-open-modal` / `data-close-modal` HTML attrs
+- Chat widget clears the status bar (z-index 30, positioned `bottom: 50px`)
