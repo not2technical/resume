@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 
 interface Message {
   role: "user" | "assistant";
@@ -206,9 +207,15 @@ export default function ChatWidget() {
               <div key={i} className={`chat-msg chat-msg--${m.role}`}>
                 {m.role === "assistant" && <span className="chat-msg__label">august</span>}
                 <div className="chat-msg__bubble">
-                  {m.content || (streaming && i === messages.length - 1 ? (
-                    <span className="chat-typing"><span /><span /><span /></span>
-                  ) : "")}
+                  {m.role === "assistant" ? (
+                    m.content ? (
+                      <ReactMarkdown>{m.content}</ReactMarkdown>
+                    ) : streaming && i === messages.length - 1 ? (
+                      <span className="chat-typing"><span /><span /><span /></span>
+                    ) : null
+                  ) : (
+                    m.content
+                  )}
                 </div>
               </div>
             ))}
