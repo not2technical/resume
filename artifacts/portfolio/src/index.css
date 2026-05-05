@@ -1173,5 +1173,5 @@ body.modal-open { overflow: hidden; }
 
 @media (max-width: 480px) {
   .chat-trigger { bottom: 52px; right: 12px; padding: 9px 14px; font-size: 12px; }
-  .chat-panel   { bottom: 46px; right: 8px; left: 8px; width: auto; }
+  .chat-panel   { bottom: 46px; top: 8px; right: 8px; left: 8px; width: auto; height: auto; max-height: none; }
 }

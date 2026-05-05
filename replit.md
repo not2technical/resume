@@ -27,8 +27,7 @@ Required secrets: `CLAUDE_API_KEY` (Anthropic API key for the chat assistant)
   - `src/components/` — HeroSection, HowIThinkSection, OperatingPrinciplesSection, ProofIBuildSection, HarnessSection, DetailSection, ExperienceModal, FooterSection, StatusBar, **ChatWidget**
 - `artifacts/api-server/` — Express API backend (serves at `/api`)
   - `src/routes/chat.ts` — `POST /api/chat` SSE streaming route (Claude)
-  - `src/knowledge/august.ts` — August's full knowledge base as a TS string constant (inlined by esbuild)
-  - `src/knowledge/august.md` — source markdown (edit this, then regenerate august.ts)
+  - `src/knowledge/august.md` — source markdown (edit this file directly; esbuild inlines it at build time via `.md` text loader — no compile step needed)
 - `lib/api-spec/openapi.yaml` — API contract (source of truth)
 
 ## Architecture decisions
