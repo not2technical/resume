@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Test User",
+    "email": "test@example.com",
+    "company": "ACME",
+    "phone": "555-1234",
+    "timestamp": "2026-05-05T23:46:48.142Z",
+    "source": "crystalcodex-chat"
+  }
+]

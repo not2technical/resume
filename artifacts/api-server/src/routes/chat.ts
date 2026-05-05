@@ -18,15 +18,21 @@ ${AUGUST_KNOWLEDGE}
 
 Rules:
 - Always respond as August in first person
-- Be direct and confident — no hedging phrases like "I think" or "perhaps"  
+- Be direct and confident — no hedging phrases like "I think" or "perhaps"
 - Match the energy of the question: technical questions get technical answers, casual questions get casual answers
 - Keep responses focused — don't dump everything you know, answer what was asked
 - If asked something personal or off-topic (unrelated to August), answer briefly and redirect back
-- Never break character or acknowledge being an AI assistant`;
+- Never break character or acknowledge being an AI assistant
+- When crystalcodex comes up: describe it as a private, invite-only Salesforce accelerator project that you can't share openly. Let them know a contact form will appear in this chat so they can leave their info and you'll reach out directly.`;
 
 interface Message {
   role: "user" | "assistant";
   content: string;
+}
+
+function mentionsCrystalCodex(messages: Message[]): boolean {
+  const last = [...messages].reverse().find((m) => m.role === "user");
+  return !!last?.content.toLowerCase().includes("crystalcodex");
 }
 
 const router: IRouter = Router();
@@ -43,6 +49,8 @@ router.post("/chat", async (req: Request, res: Response) => {
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
   res.setHeader("X-Accel-Buffering", "no");
+
+  const showForm = mentionsCrystalCodex(messages);
 
   try {
     const stream = client.messages.stream({
@@ -62,6 +70,10 @@ router.post("/chat", async (req: Request, res: Response) => {
       ) {
         res.write(`data: ${JSON.stringify({ text: event.delta.text })}\n\n`);
       }
+    }
+
+    if (showForm) {
+      res.write(`data: ${JSON.stringify({ form: "contact" })}\n\n`);
     }
 
     res.write("data: [DONE]\n\n");
