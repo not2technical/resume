@@ -3,6 +3,13 @@ export default function HeroSection() {
       <header className="hero reveal" id="hero">
     <div className="container hero__grid">
       <div className="hero__text">
+        <img
+          src="/resumeimage.png"
+          alt="August Krys"
+          className="hero__photo"
+          width={96}
+          height={96}
+        />
         <h1 className="hero__name">August Krys</h1>
         <p className="hero__role">
           Salesforce Industries Product Leader |<br />

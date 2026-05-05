@@ -150,6 +150,15 @@ a:hover { color: var(--cyan); }
 .hero__art { display: flex; justify-content: flex-end; }
 .hero__art svg { width: 100%; max-width: 520px; height: auto; display: block; }
 
+.hero__photo {
+  width: 96px; height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(122,211,255,.35);
+  margin-bottom: clamp(14px, 2vw, 22px);
+  display: block;
+}
+
 /* ============================================================
    SECTION TITLE (light & dark variants)
    ============================================================ */
