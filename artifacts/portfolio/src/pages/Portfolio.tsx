@@ -1,6 +1,14 @@
 import { useEffect } from "react";
-import htmlContent from "../portfolioContent.html?raw";
 import "../portfolio.css";
+import HeroSection from "../components/HeroSection";
+import HowIThinkSection from "../components/HowIThinkSection";
+import OperatingPrinciplesSection from "../components/OperatingPrinciplesSection";
+import ProofIBuildSection from "../components/ProofIBuildSection";
+import HarnessSection from "../components/HarnessSection";
+import DetailSection from "../components/DetailSection";
+import ExperienceModal from "../components/ExperienceModal";
+import FooterSection from "../components/FooterSection";
+import StatusBar from "../components/StatusBar";
 
 export default function Portfolio() {
   useEffect(() => {
@@ -24,7 +32,9 @@ export default function Portfolio() {
     const tabsRoot = document.getElementById("statusbar-tabs");
     let scrollHandler: (() => void) | null = null;
     if (tabsRoot) {
-      const tabs = Array.from(tabsRoot.querySelectorAll<HTMLAnchorElement>("a[data-section]"));
+      const tabs = Array.from(
+        tabsRoot.querySelectorAll<HTMLAnchorElement>("a[data-section]")
+      );
       const sectionIds = tabs.map((a) => a.dataset.section as string);
       const sections = sectionIds
         .map((id) => document.getElementById(id))
@@ -38,7 +48,11 @@ export default function Portfolio() {
           const isActive = tab.dataset.section === id;
           tab.classList.toggle("is-active", isActive);
           if (isActive) {
-            tab.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+            tab.scrollIntoView({
+              behavior: "smooth",
+              inline: "center",
+              block: "nearest",
+            });
           }
         }
       };
@@ -85,10 +99,18 @@ export default function Portfolio() {
       if (document.querySelector(".modal:not([hidden])")) return;
       const step = window.innerHeight * 0.85;
       switch (e.key) {
-        case "j": window.scrollBy({ top: step, behavior: "smooth" }); break;
-        case "k": window.scrollBy({ top: -step, behavior: "smooth" }); break;
-        case "g": window.scrollTo({ top: 0, behavior: "smooth" }); break;
-        case "G": window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }); break;
+        case "j":
+          window.scrollBy({ top: step, behavior: "smooth" });
+          break;
+        case "k":
+          window.scrollBy({ top: -step, behavior: "smooth" });
+          break;
+        case "g":
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          break;
+        case "G":
+          window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+          break;
       }
     };
     document.addEventListener("keydown", keydownVim);
@@ -141,8 +163,16 @@ export default function Portfolio() {
   }, []);
 
   return (
-    <div
-      dangerouslySetInnerHTML={{ __html: htmlContent }}
-    />
+    <>
+      <HeroSection />
+      <HowIThinkSection />
+      <OperatingPrinciplesSection />
+      <ProofIBuildSection />
+      <HarnessSection />
+      <DetailSection />
+      <ExperienceModal />
+      <FooterSection />
+      <StatusBar />
+    </>
   );
 }
