@@ -38,6 +38,19 @@ export default function HeroSection() {
             <a href="https://medium.com/@akrys" target="_blank" rel="noopener">medium.com/@akrys</a>
           </li>
         </ul>
+
+        <a
+          href="/resume.pdf"
+          download="August_Krys_Resume.pdf"
+          className="hero__resume-btn"
+          aria-label="Download resume as PDF"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16l-5-5 1.41-1.41L11 13.17V4h2v9.17l2.59-2.58L17 12l-5 5z" fill="currentColor"/>
+            <path d="M5 18h14v2H5z" fill="currentColor"/>
+          </svg>
+          Download Résumé
+        </a>
       </div>
 
       <div className="hero__art" aria-hidden="true">
