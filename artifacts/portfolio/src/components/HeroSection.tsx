@@ -40,7 +40,7 @@ export default function HeroSection() {
         </ul>
 
         <a
-          href="/resume.pdf"
+          href="/August_Krys_Resume.pdf"
           download="August_Krys_Resume.pdf"
           className="hero__resume-btn"
           aria-label="Download resume as PDF"
